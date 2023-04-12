@@ -7,5 +7,5 @@ sudo echo 'Hello World!' > /var/www/html/index.html
 sudo service nginx start
 file=/etc/nginx/sites-available/default
 phrase="location /redirect_me {\nreturn 301 http://mmagod.tech;\n}\n"
-sudo sed -ie "301 i$phrase" $file
+sudo sed -ie "301 $phrase" $file
 sudo service nginx restart
