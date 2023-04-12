@@ -6,6 +6,6 @@ sudo ufw allow 'Nginx HTTP'
 sudo echo 'Hello World!' > /var/www/html/index.html
 sudo service nginx start
 file=/etc/nginx/sites-available/default
-phrase="location /redirect_me {\nreturn 301 http://mmagod.tech;\n}\n"
+phrase="location /redirect_me {\nreturn 301 https://www.youtube.com/watch?v=QH2-TGUlwu4\n}\n"
 sudo sed -ie "301 $phrase" $file
 sudo service nginx restart
