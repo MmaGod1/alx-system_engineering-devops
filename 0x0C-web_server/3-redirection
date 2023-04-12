@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-#installs nginx and redirects to holberton school string
+#installs nginx and redirects string
 sudo apt-get -y update
 sudo apt-get -y install nginx
 sudo ufw allow 'Nginx HTTP'
@@ -7,5 +7,5 @@ sudo echo 'Hello World!' > /var/www/html/index.html
 sudo service nginx start
 file=/etc/nginx/sites-available/default
 phrase="location /redirect_me {\nreturn 301 https://www.youtube.com/watch?v=QH2-TGUlwu4\n}\n"
-sudo sed -e "301 $phrase" $file
+sudo sed -i "51i $phrase" $file
 sudo service nginx restart
