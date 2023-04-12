@@ -6,6 +6,6 @@ sudo ufw allow 'Nginx HTTP'
 sudo echo 'Hello World!' > /var/www/html/index.html
 sudo service nginx start
 file=/etc/nginx/sites-available/default
-phrase="location /redirect_me {\nreturn 301 https://www.youtube.com/watch?v=QH2-TGUlwu4\n}\n"
-sudo sed -i "51i $phrase" $file
+phrase="rewrite /redirect_me https://www.youtube.com/watch?v=QH2-TGUlwu4 permanent;"
+sudo sed -i "50i $phrase" $file
 sudo service nginx restart
