@@ -7,6 +7,6 @@ sudo echo 'Hello World!' > /var/www/html/index.html
 sudo chmod -R 755 /var/www
 sudo service nginx start
 file=/etc/nginx/sites-available/default
-phrase="rewrite /redirect_me https://www.youtube.com/watch?v=QH2-TGUlwu4 permanent;"
+phrase="rewrite ^/redirect_me https://www.youtube.com/watch?v=QH2-TGUlwu4 permanent;"
 sudo tee sed -i "50i $phrase" $file
 sudo service nginx restart
