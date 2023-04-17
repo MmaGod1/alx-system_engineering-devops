@@ -11,7 +11,7 @@ phrase1="error_page 404 /custom_404.html;\nlocation = /custom_404.html {\nroot /
 phrase2="add_header X-Served-By $hostname;"
 sudo sed -i "50i $phrase2" $file
 sudo sed -i "51i $phrase" $file
-echo "Ceci n'est pas une page" > /var/www/html/custom_404.html
+echo "Ceci n'est pas une page" > /var/www/html/404.html
 sudo chmod -R 755 /var/www
 sudo sed -i "52i $phrase1" $file
 sudo service nginx restart
