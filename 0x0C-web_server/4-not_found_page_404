@@ -5,7 +5,6 @@ sudo apt-get install -y nginx
 sudo ufw allow 'Nginx HTTP'
 echo "Hello World!" > /var/www/html/index.html
 sudo chmod -R 755 /var/www
-sudo service nginx start
 file=/etc/nginx/sites-enabled/default
 phrase="rewrite ^/redirect_me https://www.youtube.com/watch?v=QH2-TGUlwu4 permanent;"
 phrase1="error_page 404 /custom_404.html;\nlocation = /custom_404.html {\nroot /var/www/nginx/html;\nallow all;\ninternal;\n}"
