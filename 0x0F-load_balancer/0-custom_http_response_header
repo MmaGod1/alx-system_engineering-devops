@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+# Configure Nginx so that its HTTP response contains a custom header
+sudo apt-get update
+sudo apt-get install -y nginx
+sudo ufw allow 'Nginx HTTP'
+echo "Hello World!" > /var/www/html/index.html
+sudo chmod -R 755 /var/www
+sudo service nginx start
+file=/etc/nginx/sites-enabled/default
+phrase="rewrite ^/redirect_me https:/7/www.youtube.com/watch?v=QH2-TGUlwu4 permanent;"
+phrase1="error_page 404 /custom_404.html;\nlocation = /custom_404.html {\nroot /var/www/nginx/html;\nallow all;\ninternal;\n}"
+phrase2="add_header X-Served-By $hostname;"
+sudo sed -i "50i $phrase2" $file
+sudo sed -i "51i $phrase" $file
+echo "Ceci n'est pas une page" > /var/www/html/custom_404.html
+sudo chmod -R 755 /var/www
+sudo sed -i "52i $phrase1" $file
+sudo service nginx restart
