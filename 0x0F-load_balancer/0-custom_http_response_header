@@ -6,7 +6,6 @@ sudo ufw allow 'Nginx HTTP'
 echo "Hello World!" > /var/www/html/index.html
 sudo chmod -R 755 /var/www
 file=/etc/nginx/sites-enabled/default
-string=$hostname
 phrase="rewrite ^/redirect_me https://github.com/MmaGod1 permanent;"
 phrase1="error_page 404 /custom_404.html;\n\tlocation = /custom_404.html {\n\troot /usr/share/nginx/html;\n\tinternal;\n\t}"
 phrase2="add_header X-Served-By \$hostname;"
