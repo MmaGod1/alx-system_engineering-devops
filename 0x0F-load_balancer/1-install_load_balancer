@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+#Install and configure HAproxy on my lb-01 server.
+sudo add-apt-repository ppa:vbernat/haproxy-1.8 -y
+sudo apt-get update -y
+sudo apt-get install haproxy -y
+phrase="frontend mmagod.tech\n\tbind *:80\n\tmode http\n\tdefault_backend web_servers"
+phrase1="backend web_servers\n\tmode http\n\tbalance roundrobin\n\toption forwardfor\n\tserver 97931-web-01 100.25.142.6:80\n\tserver 97931-web-02 54.146.84.93:80"
+file=/etc/haproxy/haproxy.cfg
+sudo sed -i  "38i $phrase" $file
+sudo sed -i  "44i $phrase1" $file
+haproxy -c -f /etc/haproxy/haproxy.cfg
+sudo service haproxy restart
