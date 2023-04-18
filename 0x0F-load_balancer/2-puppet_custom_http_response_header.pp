@@ -1,4 +1,3 @@
-#!/usr/bin/env bash
 #Just as in task #0, we’d like you to automate the task of creating a custom HTTP header response, but with Puppet.
 file { '/etc/nginx/sites-enabled/default':
 	ensure => present,
