@@ -4,12 +4,11 @@ sudo apt-get update
 sudo apt-get install -y nginx
 sudo ufw allow 'Nginx HTTP'
 echo "Hello World!" > /var/www/html/index.html
+echo "Ceci n'est pas une page" > /var/www/html/404.html
 sudo chmod -R 755 /var/www
 file=/etc/nginx/sites-enabled/default
 phrase="rewrite ^/redirect_me https://www.youtube.com/watch?v=QH2-TGUlwu4 permanent;"
-phrase1="error_page 404 /custom_404.html;\nlocation = /custom_404.html {\nroot /var/www/nginx/html;\nallow all;\ninternal;\n}"
+phrase1="error_page 404 /custom_404.html;\n\tlocation = /custom_404.html {\n\troot /var/www/nginx/html;\n\t;\ninternal;\n\t}"
 sudo sed -i "50i $phrase" $file
-echo "Ceci n'est pas une page" > /var/www/html/404.html
-sudo chmod -R 755 /var/www
 sudo sed -i "51i $phrase1" $file
-sudo service nginx restart
+sudo service nginx start
