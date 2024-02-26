@@ -1,4 +1,4 @@
-#!/bin/env bash
+#!/usr/bin/env bash
 # Using a while loop to display "Best School" 10 times
 
 counter=0
