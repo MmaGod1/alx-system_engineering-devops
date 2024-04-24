@@ -1,6 +1,4 @@
-# Configure your Nginx server to have a custom 404 page
-# that contains the string Ceci n'est pas une page.
-
+# install and configure an Nginx server using Puppet instead of Bash.
 exec {'install':
   provider => shell,
   command  => 'sudo apt-get -y update ; sudo apt-get -y install nginx ; echo "Hello World!" | sudo tee /var/www/html/index.nginx-debian.html ; sudo sed -i "s/server_name _;/server_name _;\n\trewrite ^\/redirect_me https:\/\/github.com\/Tolulope05 permanent;/" /etc/nginx/sites-available/default ; sudo service nginx start',
