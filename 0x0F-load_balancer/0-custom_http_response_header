@@ -1,2 +1,21 @@
 #!/usr/bin/env bash
-configures Nginx server with a custom header
+#configures Nginx server with 
+apt-get update
+apt-get install -y nginx
+nginx_config="/etc/nginx/sites-available/0-custom_http_response_header"
+cat <<EOF > $nginx_config
+server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
+
+    server_name _;
+
+    location / {
+        add_header X-Served-By \$hostname;
+        # Add other configuration directives as needed
+    }
+}
+EOF
+ln -s $nginx_config /etc/nginx/sites-enabled/
+nginx -t
+systemctl reload nginx
