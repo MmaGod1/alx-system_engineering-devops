@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+configures Nginx server with a custom header
