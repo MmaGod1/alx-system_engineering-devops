@@ -10,14 +10,10 @@ echo "ENABLED=1" > /etc/default/haproxy
 
 # Listen to servers: web1 and web2
 echo "
-   listen load_balancer
-   bind *:80
-   mode http
-   balance roundrobin
-   option httpclose
-   option forwardfor
-   server 97931-web-01 54.144.222.121 check
-   server 97931-web-02 54.160.95.100 check
+   backend http_back
+        balance roundrobin
+        server web-01 54.144.222.121:80 check
+        server web-02 54.160.95.100:80 check
 " >> /etc/haproxy/haproxy.cfg
 
 service haproxy start
