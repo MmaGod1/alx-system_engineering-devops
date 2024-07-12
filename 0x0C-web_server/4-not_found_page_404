@@ -9,6 +9,7 @@ sudo mv index.html /var/www/html
 sudo cp /etc/nginx/sites-available/default /etc/nginx/sites-available/default.bak
 echo "Ceci n'est pas une page" > 404.html
 sudo mv 404.html /var/www/html
+
 SERVER_CONFIG=\
 "server {
 	listen 80 default_server;
@@ -17,17 +18,18 @@ SERVER_CONFIG=\
         root /var/www/html;
         index index.html;
         server_name _;
-        location / {
+	location / {
            try_files \$uri \$uri/ =404;
         }
-        location /redirect_me {
-           return 301 https://github.com/MmaGod1 permanent;
+         if (\$request_uri ~* redirect_me){
+	   return 301 https://github.com/MmaGod1;
         }
-        error_page 404 /404.html;
+	error_page 404 /404.html;
         location /404.html{
            root /etc/nginx/html;
            internal;
         }
 }"
-echo "$SERVER_CONFIG" > /etc/nginx/sites-available/default
+echo "$SERVER_CONFIG" > default
+sudo mv default /etc/nginx/sites-available/default
 sudo service nginx restart
