@@ -12,8 +12,8 @@ sudo echo "ENABLED=1" > /etc/default/haproxy
 echo "
    backend http_back
         balance roundrobin
-        server web-01 54.144.222.121:80 check
-        server web-02 54.160.95.100:80 check
+        server web-01 100.25.161.31 check
+        server web-02 34.207.58.201 check
 " >> /etc/haproxy/haproxy.cfg
 
 service haproxy start
