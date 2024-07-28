@@ -20,16 +20,22 @@ defaults
 
 frontend www-http
     bind   0.0.0.0:80
-    reqadd X-Forwarded-Proto:\ http
+    http-request add-header X-Forwarded-Proto https
     default_backend www-backend
     redirect scheme https code 301 if !{ ssl_fc }
 
 frontend www-https
-    bind   0.0.0.0:443 ssl crt /etc/haproxy/certs/www.bdbnb.site.pem
-    reqadd X-Forwarded-Proto:\ https
+    bind   0.0.0.0:443 ssl crt /etc/haproxy/certs/www.mma-god.tech.pem
+    http-request add-header X-Forwarded-Proto https
     acl    letsencrypt-acl path_beg /.well-known/acme-challenge/
     use_backend letsencrypt-backend if letsencrypt-acl
     default_backend www-backend
+
+backend www-backend
+    balance  roundrobin
+    redirect scheme https if !{ ssl_fc }
+    server 97931-web-01 100.25.161.31:80 check
+    server 97931-web-02 34.207.58.201:80 check
 
 backend www-backend
     balance  roundrobin
