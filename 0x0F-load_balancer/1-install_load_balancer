@@ -9,11 +9,16 @@ sudo apt-get install -y haproxy
 sudo echo "ENABLED=1" > /etc/default/haproxy
 
 # Listen to servers: web1 and web2
-echo "
+sudo bash -c 'cat > /etc/haproxy/haproxy.cfg <<EOF
+   frontend http_front
+        bind *:80
+        default_backend http_back
+
    backend http_back
         balance roundrobin
         server web-01 100.25.161.31:80 check
         server web-02 34.207.58.201:80 check
-" >> /etc/haproxy/haproxy.cfg
+EOF'
 
-service haproxy start
+sudo service restart haproxy
+sudo service haproxy start
