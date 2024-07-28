@@ -37,11 +37,5 @@ backend www-backend
     server 97931-web-01 100.25.161.31:80 check
     server 97931-web-02 34.207.58.201:80 check
 
-backend www-backend
-    balance  roundrobin
-    redirect scheme https if !{ ssl_fc }
-    server 97931-web-01 100.25.161.31:80 check
-    server 97931-web-02 34.207.58.201:80 check
-
 backend letsencrypt-backend
     server letsencrypt 127.0.0.1:54321
