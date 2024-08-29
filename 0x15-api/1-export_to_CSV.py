@@ -20,7 +20,7 @@ if __name__ == "__main__":
     employee_data = requests.get(user_url).json()
     todos_data = requests.get(todos_url).json()
 
-    employee_name = employee_data.get("name", "Unknown")
+    employee_name = employee_data["name"]
 
     # Write data to CSV
     with open(f"{employee_id}.csv", mode='w', newline='') as file:
@@ -29,8 +29,8 @@ if __name__ == "__main__":
             writer.writerow([
                 employee_id,
                 employee_name,
-                str(task.get("completed", False)),
-                task.get("title", "No Title")
+                str(task["completed"]),
+                task["title"]
             ])
 
     print(f"Data exported to {employee_id}.csv")
