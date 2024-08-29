@@ -4,9 +4,9 @@
 using data from the JSONPlaceholder API to a CSV file.
 """
 
+import csv
 import requests
 import sys
-import csv
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
