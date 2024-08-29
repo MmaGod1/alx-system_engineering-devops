@@ -1,18 +1,30 @@
 #!/usr/bin/python3
-"""Exports to-do list information for a given employee ID to CSV format."""
+
+"""Fetches and exports TODO list progress for a given employee ID
+using data from the JSONPlaceholder API to a CSV file.
+"""
+
 import csv
 import requests
 import sys
 
 if __name__ == "__main__":
-    user_id = sys.argv[1]
-    url = "https://jsonplaceholder.typicode.com/"
-    user = requests.get(url + "users/{}".format(user_id)).json()
-    username = user.get("username")
-    todos = requests.get(url + "todos", params={"userId": user_id}).json()
+    if len(sys.argv) != 2:
+        print(f"Usage: {sys.argv[0]} <employee_id>")
+        sys.exit(1)
 
-    with open("{}.csv".format(user_id), "w", newline="") as csvfile:
-        writer = csv.writer(csvfile, quoting=csv.QUOTE_ALL)
-        [writer.writerow(
-            [user_id, username, t.get("completed"), t.get("title")]
-         ) for t in todos]
+    employee_id = sys.argv[1]
+    user_url = f"https://jsonplaceholder.typicode.com/users/{employee_id}"
+    todos_url = f"https://jsonplaceholder.typicode.com/todos?userId={employee_id}"
+
+    # Fetch employee data
+    employee_response = requests.get(user_url)
+    employee_data = employee_response.json()
+    employee_name = employee_data.get("name", "")
+
+    # Fetch todos
+    todos_response = requests.get(todos_url)
+    todos_data = todos_response.json()
+
+    # Write data to CSV
+    with open(f"{employee
