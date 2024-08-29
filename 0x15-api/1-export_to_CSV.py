@@ -1,37 +1,18 @@
 #!/usr/bin/python3
-"""Exports to-do list data for a specific employee ID into a CSV file."""
-
+"""Exports to-do list information for a given employee ID to CSV format."""
 import csv
 import requests
 import sys
 
 if __name__ == "__main__":
-    # Ensure the script is called with exactly one argument
-    if len(sys.argv) != 2:
-        print(f"Usage: {sys.argv[0]} <user_id>")
-        sys.exit(1)
-
     user_id = sys.argv[1]
-    base_url = "https://jsonplaceholder.typicode.com/"
+    url = "https://jsonplaceholder.typicode.com/"
+    user = requests.get(url + "users/{}".format(user_id)).json()
+    username = user.get("username")
+    todos = requests.get(url + "todos", params={"userId": user_id}).json()
 
-    # Fetch user data
-    user_response = requests.get(f"{base_url}users/{user_id}")
-    user_data = user_response.json()
-    username = user_data.get("username", "")
-
-    # Fetch todos
-    todos_response = requests.get(f"{base_url}todos", params={"userId": user_id})
-    todos_data = todos_response.json()
-
-    # Write data to CSV file
-    with open(f"{user_id}.csv", "w", newline="") as file:
-        writer = csv.writer(file, quoting=csv.QUOTE_ALL)
-        for todo in todos_data:
-            writer.writerow([
-                user_id,
-                username,
-                str(todo.get("completed", "False")),
-                todo.get("title", "")
-            ])
-
-    print(f"Data exported to {user_id}.csv")
+    with open("{}.csv".format(user_id), "w", newline="") as csvfile:
+        writer = csv.writer(csvfile, quoting=csv.QUOTE_ALL)
+        [writer.writerow(
+            [user_id, username, t.get("completed"), t.get("title")]
+         ) for t in todos]
