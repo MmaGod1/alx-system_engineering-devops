@@ -13,27 +13,15 @@ if __name__ == "__main__":
         print(f"Usage: {sys.argv[0]} <employee_id>")
         sys.exit(1)
 
-    try:
-        employee_id = int(sys.argv[1])
-    except ValueError:
-        print(f"Usage: {sys.argv[0]} <employee_id>")
-        sys.exit(1)
-
+    employee_id = int(sys.argv[1])
     user_url = f"https://jsonplaceholder.typicode.com/users/{employee_id}"
     todos_url = f"https://jsonplaceholder.typicode.com/todos?userId={employee_id}"
 
-    try:
-        employee_response = requests.get(user_url)
-        todos_response = requests.get(todos_url)
-        employee_response.raise_for_status()
-        todos_response.raise_for_status()
-    except requests.RequestException as e:
-        print(f"Error fetching data: {e}")
-        sys.exit(1)
+    # Fetch employee and todo data
+    employee_data = requests.get(user_url).json()
+    todos_data = requests.get(todos_url).json()
 
-    employee_data = employee_response.json()
-    todos_data = todos_response.json()
-
+    # Retrieve employee name
     employee_name = employee_data.get("name", "Unknown")
 
     # Write data to CSV
