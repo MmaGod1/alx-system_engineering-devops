@@ -30,8 +30,11 @@ if __name__ == "__main__":
     filename = f"{employee_id}.csv"
     with open(filename, 'w', newline='') as csvfile:
         writer = csv.writer(csvfile, quoting=csv.QUOTE_ALL)
-        
+
         for task in todos_data:
-            writer.writerow([employee_id, employee_name, task.get("completed"), task.get("title")])
+            writer.writerow([
+                employee_id, employee_name,
+                task.get("completed"),
+                task.get("title")])
 
     print(f"Data for employee {employee_id} has been exported to {filename}")
