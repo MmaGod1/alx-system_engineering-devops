@@ -1,18 +1,35 @@
 #!/usr/bin/python3
-"""Exports to-do list information for a given employee ID to CSV format."""
-import csv
+
+"""Fetches and exports TODO list progress for a given employee ID
+using data from the JSONPlaceholder API to a CSV file.
+"""
+
 import requests
 import sys
+import csv
 
-if __name__ == "__main__":
-    user_id = sys.argv[1]
-    url = "https://jsonplaceholder.typicode.com/"
-    user = requests.get(url + "users/{}".format(user_id)).json()
-    username = user.get("username")
-    todos = requests.get(url + "todos", params={"userId": user_id}).json()
+if len(sys.argv) != 2:
+    print(f"Usage: {sys.argv[0]} <employee_id>")
+    sys.exit(1)
 
-    with open("{}.csv".format(user_id), "w", newline="") as csvfile:
-        writer = csv.writer(csvfile, quoting=csv.QUOTE_ALL)
-        [writer.writerow(
-            [user_id, username, t.get("completed"), t.get("title")]
-         ) for t in todos]
+employee_id = int(sys.argv[1])
+user_url = f"https://jsonplaceholder.typicode.com/users/{employee_id}"
+todos_url = f"https://jsonplaceholder.typicode.com/todos?userId={employee_id}"
+
+employee_data = requests.get(user_url).json()
+todos_data = requests.get(todos_url).json()
+
+employee_name = employee_data["name"]
+
+# Write data to CSV
+with open(f"{employee_id}.csv", mode='w', newline='') as file:
+    writer = csv.writer(file, quoting=csv.QUOTE_ALL)
+    for task in todos_data:
+        writer.writerow([
+            employee_id,
+            employee_name,
+            str(task["completed"]),
+            task["title"]
+        ])
+
+print(f"Data exported to {employee_id}.csv")
