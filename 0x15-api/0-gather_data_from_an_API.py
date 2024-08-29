@@ -7,25 +7,28 @@ using data from the JSONPlaceholder API.
 import requests
 import sys
 
+if __name__ == "__main__":
+    if len(sys.argv) != 2:
+        print(f"Usage: {sys.argv[0]} <employee_id>")
+        sys.exit(1)
 
-if len(sys.argv) != 2:
-    print(f"Usage: {sys.argv[0]} <employee_id>")
-    sys.exit(1)
+    employee_id = int(sys.argv[1])
 
-employee_id = int(sys.argv[1])
+    user_url = f"https://jsonplaceholder.typicode.com/users/{employee_id}"
+    todos_url = (
+            f"https://jsonplaceholder.typicode.com/todos?userId={employee_id}"
 
-user_url = f"https://jsonplaceholder.typicode.com/users/{employee_id}"
-todos_url = f"https://jsonplaceholder.typicode.com/todos?userId={employee_id}"
+    )
 
-employee_data = requests.get(user_url).json()
-todos_data = requests.get(todos_url).json()
+    employee_data = requests.get(user_url).json()
+    todos_data = requests.get(todos_url).json()
 
-employee_name = employee_data["name"]
-total_tasks = len(todos_data)
-done_tasks = [task for task in todos_data if task["completed"]]
-completed_tasks = len(done_tasks)
+    employee_name = employee_data["name"]
+    total_tasks = len(todos_data)
+    done_tasks = [task for task in todos_data if task["completed"]]
+    completed_tasks = len(done_tasks)
 
-print(f"Employee {employee_name} is done with tasks("
-      f"{completed_tasks}/{total_tasks}):")
-for task in done_tasks:
-    print(f"\t {task['title']}")
+    print(f"Employee {employee_name} is done with tasks("
+          f"{completed_tasks}/{total_tasks}):")
+    for task in done_tasks:
+        print(f"\t {task['title']}")
