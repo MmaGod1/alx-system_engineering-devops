@@ -15,8 +15,9 @@ if __name__ == "__main__":
 
     employee_id = int(sys.argv[1])
     user_url = f"https://jsonplaceholder.typicode.com/users/{employee_id}"
-    todos_url = f"https://jsonplaceholder.typicode.com/todos?userId={employee_id}"
-
+    todos_url = (
+            f"https://jsonplaceholder.typicode.com/todos?userId={employee_id}"
+    )
     employee_data = requests.get(user_url).json()
     todos_data = requests.get(todos_url).json()
 
