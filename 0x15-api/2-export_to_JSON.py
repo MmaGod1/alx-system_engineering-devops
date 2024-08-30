@@ -3,39 +3,35 @@
 Export TODO list data for an employee to a JSON file in JSON format.
 """
 
-import json
 import requests
 import sys
+import json
 
-# Check if the script is run with the correct number of arguments
-if len(sys.argv) != 2:
-    print("Usage: python3 2-export_to_JSON.py <employee_id>")
-    sys.exit(1)
+if __name__ == "__main__":
+    if len(sys.argv) != 2:
+        print(f"Usage: {sys.argv[0]} <employee_id>")
+        sys.exit(1)
 
-employee_id = int(sys.argv[1])
+    employee_id = int(sys.argv[1])
 
-users_url = f"https://jsonplaceholder.typicode.com/users/{employee_id}"
-todos_url = f"https://jsonplaceholder.typicode.com/todos?userId={employee_id}"
+    user_url = f"https://jsonplaceholder.typicode.com/users/{employee_id}"
+    todos_url = f"https://jsonplaceholder.typicode.com/todos?userId={employee_id}"
 
-user_data = requests.get(users_url).json()
-todos_data = requests.get(todos_url).json()
+    employee_data = requests.get(user_url).json()
+    todos_data = requests.get(todos_url).json()
 
-employee_username = user_data.get("username")
+    employee_name = employee_data["name"]
 
-# Prepare the list of tasks
-tasks_list = [
-    {
-        "task": task.get("title"),
-        "completed": task.get("completed"),
-        "username": employee_username
-    }
-    for task in todos_data
-]
+    # Create a dictionary to store task data
+    task_data = {str(employee_id): []}
 
-tasks_dict = {str(employee_id): tasks_list}
+    for task in todos_data:
+        task_data[str(employee_id)].append({
+            "task": task["title"],
+            "completed": task["completed"],
+            "username": employee_name
+        })
 
-filename = f"{employee_id}.json"
-with open(filename, 'w') as jsonfile:
-    json.dump(tasks_dict, jsonfile, indent=4)
-
-print(f"Data for employee {employee_id} has been exported to {filename}")
+    # Write the data to a JSON file
+    with open(f"{employee_id}.json", "w") as f:
+        json.dump(task_data, f, indent=4)
