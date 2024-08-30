@@ -14,7 +14,6 @@ if __name__ == "__main__":
 
     employee_id = int(sys.argv[1])
 
-    # Fetch employee and TODO data
     user_url = f"https://jsonplaceholder.typicode.com/users/{employee_id}"
     todos_url = f"https://jsonplaceholder.typicode.com/todos?userId={employee_id}"
 
@@ -22,6 +21,8 @@ if __name__ == "__main__":
     todos_data = requests.get(todos_url).json()
 
     employee_name = employee_data.get("name")
+
+    # Prepare tasks list
     tasks_list = [
         {
             "task": task.get("title"),
@@ -31,9 +32,11 @@ if __name__ == "__main__":
         for task in todos_data
     ]
 
-    # Write to JSON file
+    # Store data in the correct format
+    tasks_dict = {str(employee_id): tasks_list}
+
     filename = f"{employee_id}.json"
     with open(filename, 'w') as jsonfile:
-        json.dump({str(employee_id): tasks_list}, jsonfile, indent=4)
+        json.dump(tasks_dict, jsonfile, indent=4)
 
     print(f"Data for employee {employee_id} has been exported to {filename}")
