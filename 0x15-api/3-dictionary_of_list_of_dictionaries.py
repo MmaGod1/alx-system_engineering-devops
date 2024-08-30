@@ -31,4 +31,5 @@ if __name__ == "__main__":
 
         all_todos[user_id] = tasks
 
+    with open("todo_all_employees.json", "w") as jsonfile:
         json.dump(all_todos, jsonfile, indent=4)
