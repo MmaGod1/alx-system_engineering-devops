@@ -14,7 +14,6 @@ if __name__ == "__main__":
 
     employee_id = int(sys.argv[1])
 
-    # Fetch user and TODOs data
     user_url = f"https://jsonplaceholder.typicode.com/users/{employee_id}"
     todos_url = (
             f"https://jsonplaceholder.typicode.com/todos?userId={employee_id}"
@@ -22,8 +21,6 @@ if __name__ == "__main__":
 
     employee_data = requests.get(user_url).json()
     todos_data = requests.get(todos_url).json()
-
-    # Extract required information
     employee_name = employee_data.get("username")
 
     # Create the CSV file
