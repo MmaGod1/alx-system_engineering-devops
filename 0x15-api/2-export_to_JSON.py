@@ -1,38 +1,39 @@
 #!/usr/bin/python3
-"""Exports TODO list data for a given employee ID in JSON format."""
+"""
+Exports TODO list data for an employee to a JSON file.
+"""
+
 import json
 import requests
 import sys
 
 if __name__ == "__main__":
-    employee_id = sys.argv[1]
+    if len(sys.argv) != 2:
+        print("Usage: python3 2-export_to_JSON.py <employee_id>")
+        sys.exit(1)
 
+    employee_id = int(sys.argv[1])
+
+    # Fetch employee and TODO data
     user_url = f"https://jsonplaceholder.typicode.com/users/{employee_id}"
-    todos_url = (
-            f"https://jsonplaceholder.typicode.com/users/{employee_id}/todos"
-            )
+    todos_url = f"https://jsonplaceholder.typicode.com/todos?userId={employee_id}"
 
-    user_data = requests.get(user_url).json()
+    employee_data = requests.get(user_url).json()
     todos_data = requests.get(todos_url).json()
 
-    employee_username = user_data.get("username")
-
-    # Prepare data to be exported
-    tasks_list = []
-    for task in todos_data:
-        tasks_list.append({
+    employee_name = employee_data.get("name")
+    tasks_list = [
+        {
             "task": task.get("title"),
             "completed": task.get("completed"),
-            "username": employee_username
-        })
+            "username": employee_name
+        }
+        for task in todos_data
+    ]
 
-    # Store the data in a dictionary with the USER_ID as the key
-    tasks_dict = {employee_id: tasks_list}
-
+    # Write to JSON file
     filename = f"{employee_id}.json"
-
-    # Write the data to a JSON file
     with open(filename, 'w') as jsonfile:
-        json.dump(tasks_dict, jsonfile)
+        json.dump({str(employee_id): tasks_list}, jsonfile, indent=4)
 
     print(f"Data for employee {employee_id} has been exported to {filename}")
