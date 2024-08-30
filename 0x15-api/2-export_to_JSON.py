@@ -1,42 +1,41 @@
 #!/usr/bin/python3
 """
-Exports TODO list data for an employee to a JSON file.
+Export TODO list data for an employee to a JSON file in JSON format.
 """
 
 import json
 import requests
 import sys
 
-if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        print("Usage: python3 2-export_to_JSON.py <employee_id>")
-        sys.exit(1)
+# Check if the script is run with the correct number of arguments
+if len(sys.argv) != 2:
+    print("Usage: python3 2-export_to_JSON.py <employee_id>")
+    sys.exit(1)
 
-    employee_id = int(sys.argv[1])
+employee_id = int(sys.argv[1])
 
-    user_url = f"https://jsonplaceholder.typicode.com/users/{employee_id}"
-    todos_url = f"https://jsonplaceholder.typicode.com/todos?userId={employee_id}"
+users_url = f"https://jsonplaceholder.typicode.com/users/{employee_id}"
+todos_url = f"https://jsonplaceholder.typicode.com/todos?userId={employee_id}"
 
-    employee_data = requests.get(user_url).json()
-    todos_data = requests.get(todos_url).json()
+user_data = requests.get(users_url).json()
+todos_data = requests.get(todos_url).json()
 
-    employee_name = employee_data.get("name")
+employee_username = user_data.get("username")
 
-    # Prepare tasks list
-    tasks_list = [
-        {
-            "task": task.get("title"),
-            "completed": task.get("completed"),
-            "username": employee_name
-        }
-        for task in todos_data
-    ]
+# Prepare the list of tasks
+tasks_list = [
+    {
+        "task": task.get("title"),
+        "completed": task.get("completed"),
+        "username": employee_username
+    }
+    for task in todos_data
+]
 
-    # Store data in the correct format
-    tasks_dict = {str(employee_id): tasks_list}
+tasks_dict = {str(employee_id): tasks_list}
 
-    filename = f"{employee_id}.json"
-    with open(filename, 'w') as jsonfile:
-        json.dump(tasks_dict, jsonfile, indent=4)
+filename = f"{employee_id}.json"
+with open(filename, 'w') as jsonfile:
+    json.dump(tasks_dict, jsonfile, indent=4)
 
-    print(f"Data for employee {employee_id} has been exported to {filename}")
+print(f"Data for employee {employee_id} has been exported to {filename}")
