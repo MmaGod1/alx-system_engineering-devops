@@ -16,8 +16,16 @@ def top_ten(subreddit):
     
     try:
         data = response.json()
+        if 'data' not in data or 'children' not in data['data']:
+            print(None)
+            return
+        
         posts = data['data']['children']
+        if not posts:
+            print(None)
+            return
+        
         for post in posts[:10]:
             print(post['data']['title'])
-    except (KeyError, ValueError):
+    except (ValueError, KeyError):
         print(None)
