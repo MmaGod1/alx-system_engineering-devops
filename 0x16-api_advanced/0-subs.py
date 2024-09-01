@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-0-subs
+checks for the numbers of subscribers
 """
 
 import requests
@@ -22,6 +22,6 @@ def number_of_subscribers(subreddit):
     # Check the response status
     if response.status_code == 200:
         data = response.json()
-        return data['data']['subscribers']
+        return data['data'].get('subscribers', 0)
     else:
         return 0
