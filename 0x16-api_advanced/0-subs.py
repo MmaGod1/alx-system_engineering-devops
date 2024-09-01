@@ -1,16 +1,19 @@
 #!/usr/bin/python3
 """
-Calculates the number of subscribers
+0-subs
 """
+
 import requests
+
 
 def number_of_subscribers(subreddit):
     """
-    Queries the Reddit API and returns the number of subscribers for a given subreddit.
+    Queries the Reddit API and returns the number of subscribers for
+    a given subreddit.
     If an invalid subreddit is given, return 0.
     """
     # Set up the URL and headers
-    url = f"https://www.reddit.com/r/{subreddit}/about.json"
+    url = "https://www.reddit.com/r/{}/about.json".format(subreddit)
     headers = {'User-Agent': 'my_reddit_api'}
 
     # Send a GET request to the Reddit API
