@@ -14,6 +14,6 @@ service { 'apache2':
 }
 
 exec { 'restart_apache':
-  command => '/bin/systemctl restart apache2',
+  command     => '/bin/systemctl restart apache2',
   refreshonly => true,
 }
