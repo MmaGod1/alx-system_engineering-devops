@@ -1,4 +1,5 @@
 # 0-strace_is_your_friend.pp
+
 file { '/path/to/missing/file':
   ensure  => 'file',
   source  => 'puppet:///modules/your_module/missing_file',
