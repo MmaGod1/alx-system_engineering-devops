@@ -1,7 +1,13 @@
+# 0-strace_is_your_friend.pp
+
 file { '/etc/apache2/sites-available/your_site.conf':
   ensure  => file,
-  content => <<EOT
-  # Remove line referencing the missing file
+  content => <<-EOT
+    # Apache virtual host configuration
+    <VirtualHost *:80>
+      DocumentRoot /var/www/html
+      # Remove or update any lines referencing missing files or incorrect configurations
+    </VirtualHost>
   EOT
   require => Package['apache2'],
 }
@@ -14,5 +20,6 @@ service { 'apache2':
 }
 
 exec { 'restart_apache':
-  command => '/etc/init.d/apache2 restart',
+  command     => '/usr/bin/systemctl restart apache2', # Correct path to systemctl
+  refreshonly => true,
 }
