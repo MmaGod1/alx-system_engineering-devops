@@ -1,12 +1,12 @@
 # This manifest adjusts Nginx settings to handle more concurrent requests
 
-exec { 'fix-nginx':
-  command => '/usr/sbin/nginx -s reload',
-  require => Service['nginx'],
+exec { 'update_ulimit':
+  provider => shell,
+  command  => 'sudo sed -i "s/ULIMIT=\"-n 15\"/ULIMIT=\"-n 4096\"/" /etc/default/nginx',
+  before   => Exec['reload_nginx'],
 }
 
-file { '/etc/nginx/nginx.conf':
-  ensure  => file,
-  content => template('nginx/nginx.conf.erb'),
-  notify  => Exec['fix-nginx'],
+exec { 'reload_nginx':
+  provider => shell,
+  command  => '/usr/sbin/service nginx restart',
 }
